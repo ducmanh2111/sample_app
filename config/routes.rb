@@ -15,5 +15,9 @@ Rails.application.routes.draw do
 	post   '/login',   to: 'sessions#create'
 	delete '/logout',  to: 'sessions#destroy'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  resources :users	
+  resources :users , only: [:index, :new, :show, :create, :edit, :update, :destroy]
+  # Demo ve Namespace
+  # namespace :admin do
+  # end
+  resources :account_activations, only: [:edit]
 end
