@@ -7,17 +7,18 @@ class UsersController < ApplicationController
   def index
     # @users = User.all
     # @users = User.paginate(:page => params[:page])
-    @users = User.where(activated: true).paginate(page: params[:page])
+    @users = User.where(activated: true).paginate(page: params[:page], per_page: 5)
   end
 
   def new
 # debugger
 @user = User.new
-end
+  end
 
 def show
   @user = User.find(params[:id])
-  # redirect_to root_url and return unless user.activated:true
+  @microposts = @user.microposts.paginate(page: params[:page], per_page: 5)
+  redirect_to root_url and return unless @user.activated?
 # debugger
 end
 
@@ -55,14 +56,6 @@ private
 
 def user_params
   params.require(:user).permit(:name,:email,:password,:password_confirmation)
-end
-
-def logged_in_user
-  unless logged_in?
-    store_location
-    flash[:danger]="Please log in"
-    redirect_to login_url
-  end
 end
 
 def correct_user
